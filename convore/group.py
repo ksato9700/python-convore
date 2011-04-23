@@ -24,12 +24,10 @@ class ConvoreGroups(object):
             response = self.client._make_request(command="groups/%s.json" % group_id)
             return ConvoreGroup(response['group'], self.client)
         elif type(group_id) == str:
-            groups = self()
-            group = False
-            for group in groups:
+            for group in self():
                 if group.name == group_id:
-                    break
-            return group
+                    return group
+            return False
 
     def create(self, name, description=None, slug=None):
         params = {'name': name}

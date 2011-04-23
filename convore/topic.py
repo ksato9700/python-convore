@@ -21,8 +21,14 @@ class ConvoreTopics(object):
         return topics
 
     def __getitem__(self, topic_id):
-        response = self.client._make_request(command="topics/%s.json" % topic_id)
-        return ConvoreTopic(response['topic'], self.client)
+        if type(topic_id) == int:
+            response = self.client._make_request(command="topics/%s.json" % topic_id)
+            return ConvoreTopic(response['topic'], self.client)
+        elif type(topic_id) == str:
+            for topic in self():
+                if topic.slug == topic_id:
+                    return topic
+            return False
 
     def create(self, name):
         if self.group_id == None:
